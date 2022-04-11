@@ -1,0 +1,73 @@
+version: "3.7"
+
+services:
+    # image project
+    ead:
+        container_name: plataforma_ead_laravel-9
+        build:
+            context: .
+            dockerfile: Dockerfile
+        image: especializati/laravel9-app
+        restart: unless-stopped
+        working_dir: /var/www/
+        volumes:
+            - ./:/var/www
+        depends_on: 
+            - redis
+        networks: 
+            - plataforma_ead
+    
+    # nginx
+    nginx:
+        container_name: plataforma_ead_nginx
+        image: nginx:alpine
+        restart: unless-stopped
+        ports: 
+            - "8006:80"
+        volumes: 
+            - ./:/var/www
+            - ./docker/nginx/:/etc/nginx/conf.d/
+        networks: 
+            - plataforma_ead
+
+    # db mysql
+    mysql:
+        container_name: plataforma_ead_mysql
+        image: mysql:5.7.22
+        restart: unless-stopped
+        environment: 
+            MYSQL_DATABASE: ${DB_DATABASE}
+            MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+            MYSQL_PASSWORD: ${DB_PASSWORD}
+            MYSQL_USER: ${DB_USERNAME}
+        volumes: 
+            - ./.docker/mysql/dbdata:/var/lib/mysql
+        ports: 
+            - "3323:3306"
+        networks: 
+            - plataforma_ead
+
+    # queue
+    queue:
+        container_name: plataforma_ead_queue
+        image: especializati/laravel9-app
+        restart: unless-stopped
+        command: "php artisan queue:work"
+        volumes: 
+            - ./:/var/www
+        depends_on: 
+            - redis
+            - ead
+        networks: 
+            - plataforma_ead
+
+    # redis
+    redis:
+        container_name: plataforma_ead_redis
+        image: redis:latest
+        networks: 
+            - plataforma_ead
+
+networks: 
+    plataforma_ead:
+        driver: bridge
