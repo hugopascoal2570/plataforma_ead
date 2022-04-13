@@ -10,9 +10,11 @@ class ReplySupport extends Model
 {
     use HasFactory, UuidTrait;
 
+    use HasFactory, UuidTrait;
+
     public $incrementing = false;
 
-    protected $keyType =  'uuid';
+    protected $keyType = 'uuid';
 
     protected $fillable = ['description', 'support_id', 'user_id'];
 
