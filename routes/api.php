@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\{
     CourseController,
     ModuleController,
     LessonController,
+    ReplySupportController,
     SupportController
 };
 
@@ -21,6 +22,7 @@ Route::get('/lessons/{id}', [LessonController::class, 'show']);
 Route::get('/supports', [SupportController::class, 'index']);
 Route::post('/supports', [SupportController::class, 'store']);
 
+Route::post('/replies', [ReplySupportController::class, 'createReply']);
 
 Route::get('/', function () {
     return response()->json(['success ok' => true]);
