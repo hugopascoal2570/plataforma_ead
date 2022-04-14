@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Api\Auth;
 
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\ValidationException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AuthRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
-use Dotenv\Exception\ValidationException;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
@@ -36,7 +36,8 @@ class AuthController extends Controller
     public function logout()
     {
         auth()->user()->tokens()->delete();
-        return response()->json(['logout' => true]);
+
+        return response()->json(['success' => true]);
     }
 
     public function me()
