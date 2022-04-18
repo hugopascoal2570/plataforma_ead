@@ -9,6 +9,7 @@ use App\Repositories\Traits\RepositoryTrait;
 class SupportRepository
 {
     use RepositoryTrait;
+
     protected $entity;
 
     public function __construct(Support $model)
@@ -39,7 +40,14 @@ class SupportRepository
                     $filter = $filters['filter'];
                     $query->where('description', 'LIKE', "%{$filter}%");
                 }
+
+                if (isset($filters['user'])) {
+                    $user = $this->getUserAuth();
+
+                    $query->where('user_id', $user->id);
+                }
             })
+            ->with('replies')
             ->orderBy('updated_at')
             ->get();
     }
@@ -51,8 +59,9 @@ class SupportRepository
             ->create([
                 'lesson_id' => $data['lesson'],
                 'description' => $data['description'],
-                'status' => $data['status']
+                'status' => $data['status'],
             ]);
+
         return $support;
     }
 
@@ -60,7 +69,7 @@ class SupportRepository
     {
         $user = $this->getUserAuth();
 
-        return  $this->getSupport($supportId)
+        return $this->getSupport($supportId)
             ->replies()
             ->create([
                 'description' => $data['description'],

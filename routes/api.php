@@ -2,28 +2,32 @@
 
 use App\Http\Controllers\Api\{
     CourseController,
-    ModuleController,
     LessonController,
+    ModuleController,
     ReplySupportController,
-    SupportController,
+    SupportController
 };
 use App\Http\Controllers\Api\Auth\{
     AuthController,
     ResetPasswordController
 };
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
+/**
+ * Auth
+ */
 Route::post('/auth', [AuthController::class, 'auth']);
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 Route::get('/me', [AuthController::class, 'me'])->middleware('auth:sanctum');
 
-//reset password
+/**
+ * Reset Password
+ */
 Route::post('/forgot-password', [ResetPasswordController::class, 'sendResetLink'])->middleware('guest');
 Route::post('/reset-password', [ResetPasswordController::class, 'resetPassword'])->middleware('guest');
 
-Route::middleware(['auth:sanctum'])->group(function () {
 
+Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/courses', [CourseController::class, 'index']);
     Route::get('/courses/{id}', [CourseController::class, 'show']);
 
@@ -34,14 +38,15 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::post('/lessons/viewed', [LessonController::class, 'viewed']);
 
+    Route::get('/my-supports', [SupportController::class, 'mySupports']);
     Route::get('/supports', [SupportController::class, 'index']);
     Route::post('/supports', [SupportController::class, 'store']);
 
     Route::post('/replies', [ReplySupportController::class, 'createReply']);
 });
 
-
-
 Route::get('/', function () {
-    return response()->json(['success ok' => true]);
+    return response()->json([
+        'success' => true,
+    ]);
 });
