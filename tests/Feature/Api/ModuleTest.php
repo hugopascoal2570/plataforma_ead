@@ -10,11 +10,6 @@ use Tests\TestCase;
 
 class ModuleTest extends TestCase
 {
-    /**
-     * A basic feature test example.
-     *
-     * @return void
-     */
     use UtilsTrait;
 
     public function test_get_modules_unauthenticated()
@@ -24,7 +19,7 @@ class ModuleTest extends TestCase
         $response->assertStatus(401);
     }
 
-    public function test_get_modules_not_found()
+    public function test_get_modules_course_not_found()
     {
         $response = $this->getJson('/courses/fake_value/modules', $this->defaultHeaders());
 
@@ -35,7 +30,8 @@ class ModuleTest extends TestCase
     public function test_get_modules_course()
     {
         $course = Course::factory()->create();
-        $response = $this->getJson('/courses/{$course->id}/modules', $this->defaultHeaders());
+
+        $response = $this->getJson("/courses/{$course->id}/modules", $this->defaultHeaders());
 
         $response->assertStatus(200);
     }
@@ -46,9 +42,10 @@ class ModuleTest extends TestCase
         Module::factory()->count(10)->create([
             'course_id' => $course->id
         ]);
+
         $response = $this->getJson("/courses/{$course->id}/modules", $this->defaultHeaders());
 
         $response->assertStatus(200)
-            ->assertJsonCount(10, 'data');;
+            ->assertJsonCount(10, 'data');
     }
 }
