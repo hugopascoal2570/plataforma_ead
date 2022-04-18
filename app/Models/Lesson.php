@@ -11,9 +11,10 @@ class Lesson extends Model
     use HasFactory, UuidTrait;
 
     public $incrementing = false;
-    protected $keyType =  'uuid';
 
-    protected $fillable = ['module_id', 'name', 'description', 'url', 'video'];
+    protected $keyType = 'uuid';
+
+    protected $fillable = ['name', 'description', 'video'];
 
     public function supports()
     {

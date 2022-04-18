@@ -8,6 +8,7 @@ use App\Repositories\Traits\RepositoryTrait;
 class ReplySupportRepository
 {
     use RepositoryTrait;
+
     protected $entity;
 
     public function __construct(ReplySupport $model)
@@ -19,7 +20,7 @@ class ReplySupportRepository
     {
         $user = $this->getUserAuth();
 
-        return  $this->entity
+        return $this->entity
             ->create([
                 'support_id' => $data['support'],
                 'description' => $data['description'],

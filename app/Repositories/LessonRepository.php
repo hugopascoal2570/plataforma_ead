@@ -7,7 +7,6 @@ use App\Repositories\Traits\RepositoryTrait;
 
 class LessonRepository
 {
-
     use RepositoryTrait;
 
     protected $entity;
@@ -21,9 +20,11 @@ class LessonRepository
     {
         return $this->entity
             ->where('module_id', $moduleId)
+            ->with('supports.replies')
             ->get();
     }
-    public function getLessonsById($identify)
+
+    public function getLesson(string $identify)
     {
         return $this->entity->findOrFail($identify);
     }

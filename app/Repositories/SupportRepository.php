@@ -3,7 +3,6 @@
 namespace App\Repositories;
 
 use App\Models\Support;
-
 use App\Repositories\Traits\RepositoryTrait;
 
 class SupportRepository

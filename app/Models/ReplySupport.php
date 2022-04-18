@@ -10,8 +10,6 @@ class ReplySupport extends Model
 {
     use HasFactory, UuidTrait;
 
-    use HasFactory, UuidTrait;
-
     public $incrementing = false;
 
     protected $keyType = 'uuid';
