@@ -13,4 +13,12 @@ trait UtilsTrait
         $token = $user->createToken('teste')->plainTextToken;
         return $token;
     }
+
+    public function defaultHeaders()
+    {
+        $token = $this->createTokenUser();
+        return [
+            'Authorization' => "Bearer {$token}",
+        ];
+    }
 }
